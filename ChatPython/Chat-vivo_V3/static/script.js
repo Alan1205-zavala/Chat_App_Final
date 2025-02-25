@@ -6,7 +6,7 @@ function joinChat() {
     }
 
     // Conectar al servidor Socket.IO
-    socket = io.connect('http://127.0.0.1:5000'); //Cambiar por IP del dispositivo si quieres ser servidor del chat
+    socket = io.connect('http://25.65.117.188:5000'); //Cambiar por IP del dispositivo si quieres ser servidor del chat
 
     // Mostrar la interfaz del chat y ocultar la pantalla de inicio
     document.getElementById("login").style.display = "none";
