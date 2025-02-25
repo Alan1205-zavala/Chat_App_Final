@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat en Vivo</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(to right, #6a11cb, #2575fc);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        #login, #chat {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            width: 500px; /* Ancho fijo del contenedor */
+            max-width: 90%; /* Limitar el ancho máximo para que no se salga de la pantalla */
+            transition: all 0.3s ease-in-out;
+            box-sizing: border-box; /* Incluir padding y border en el ancho total */
+        }
+        h1 {
+            color: #333;
+            font-weight: 600;
+        }
+        input {
+            width: calc(100% - 22px);
+            padding: 10px;
+            margin-top: 10px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            outline: none;
+            transition: 0.3s;
+        }
+        input:focus {
+            border-color: #2575fc;
+            box-shadow: 0 0 8px rgba(37, 117, 252, 0.5);
+        }
+        button {
+            background: #2575fc;
+            color: white;
+            border: none;
+            padding: 12px;
+            width: 100%;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-top: 10px;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+        button:hover {
+            background: #1a5ed2;
+            transform: scale(1.05);
+        }
+        #chat-container {
+            display: flex;
+            flex-direction: column;
+            height: 400px;
+        }
+        #users {
+            background: #f1f1f1;
+            padding: 10px;
+            margin-bottom: 10px;
+            font-weight: bold;
+            color: #333;
+        }
+        #messages {
+            flex-grow: 1;
+            background: white;
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            overflow-y: auto;
+            height: 250px;
+            text-align: left;
+            width: 100%; /* Asegurar que ocupe todo el ancho disponible */
+            box-sizing: border-box; /* Incluir padding y border en el ancho total */
+        }
+        #messages p {
+            background: #e1eaff;
+            padding: 8px;
+            border-radius: 8px;
+            margin: 5px 0;
+            width: fit-content;
+            max-width: 80%;
+        }
+        #messages p.self {
+            background: #c1e1c5;
+            align-self: flex-end;
+        }
+        #message-input {
+            display: flex;
+            margin-top: 10px;
+            width: 100%; /* Asegurar que ocupe todo el ancho disponible */
+            box-sizing: border-box; /* Incluir padding y border en el ancho total */
+        }
+        #myMessage {
+            flex-grow: 1;
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            outline: none;
+            width: calc(100% - 100px); /* Ajustar el ancho del campo de entrada */
+            box-sizing: border-box; /* Incluir padding y border en el ancho total */
+        }
+        #myMessage:focus {
+            border-color: #2575fc;
+        }
+        #message-input button {
+            margin-left: 8px;
+            padding: 10px 15px;
+            width: auto; /* Ajustar el ancho del botón */
+            box-sizing: border-box; /* Incluir padding y border en el ancho total */
+        }
+
+        #exitButton {
+           background: #ff4d4d;
+           color: white;
+           border: none;
+           padding: 12px;
+           width: 100%;
+           border-radius: 8px;
+           cursor: pointer;
+           margin-top: 10px;
+           font-weight: bold;
+           transition: 0.3s;
+        }
+
+        #exitButton:hover {
+          background: #cc0000;
+          transform: scale(1.05);
+        }
+    </style>
+</head>
+<body>
+
+    <div id="login">
+        <h1>Bienvenido al Chat</h1>
+        <input id="username" placeholder="Ingresa tu nombre..." autocomplete="off">
+        <button onclick="joinChat()">Unirse al Chat</button>
+    </div>
+
+    <div id="chat" style="display:none;">
+        <h1>Chat en Vivo</h1>
+        <div id="chat-container">
+            <div id="users"> Usuarios en línea </div>
+            <div id="messages"></div>
+            <div id="message-input">
+                <input id="myMessage" placeholder="Escribe tu mensaje..." autocomplete="off">
+                <button id="sendButton" onclick="sendMessage()">Enviar</button>
+            </div>
+            <button id="exitButton" onclick="exitChat()">Salir del chat</button>
+        </div>
+    </div>
+
+</body>
+</html>
